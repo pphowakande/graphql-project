@@ -1,0 +1,578 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "venue/v1/venue.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/venues": {
+      "post": {
+        "operationId": "CreateVenue",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/VenueGetVenueByIDRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/VenueCreateVenueRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Venue"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "EditVenue",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/VenueGetVenueByIDRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/VenueEditVenueRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Venue"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/venues/amenities/all": {
+      "get": {
+        "operationId": "GetAllAmenities",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/VenueGetAllAmenitiesRes"
+            }
+          }
+        },
+        "tags": [
+          "Venue"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/venues/list/{accountId}": {
+      "get": {
+        "operationId": "GetListOfVenueByMerchantID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/VenueGetListOfVenueByMerchantIDRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "description": "Filter by accountId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Venue"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/venues/{venueId}": {
+      "get": {
+        "operationId": "GetVenueByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/VenueGetVenueByIDRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "venueId",
+            "description": "Venue ID",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Venue"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "VenueAmenityData": {
+      "type": "object",
+      "properties": {
+        "amenityId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "amenityName": {
+          "type": "string"
+        }
+      }
+    },
+    "VenueCreateAmenitiesData": {
+      "type": "object",
+      "properties": {
+        "amenityId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "VenueCreateImageData": {
+      "type": "object",
+      "properties": {
+        "headerImg": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VenueCreateImgData"
+          }
+        },
+        "thumbnailImg": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VenueCreateImgData"
+          }
+        },
+        "galleryImg": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VenueCreateImgData"
+          }
+        }
+      }
+    },
+    "VenueCreateImgData": {
+      "type": "object",
+      "properties": {
+        "imgUrl": {
+          "type": "string"
+        }
+      }
+    },
+    "VenueCreateVenueHolidayRequest": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        }
+      }
+    },
+    "VenueCreateVenueRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of venue"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of venue"
+        },
+        "address": {
+          "type": "string",
+          "description": "Address of venue"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone number of venue"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email of venue"
+        },
+        "latitude": {
+          "type": "number",
+          "format": "float",
+          "description": "Latitude of venue"
+        },
+        "longitude": {
+          "type": "number",
+          "format": "float",
+          "description": "Longitude of venue"
+        },
+        "amenities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VenueCreateAmenitiesData"
+          },
+          "description": "Amenities of venue"
+        },
+        "hoursOfOperation": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VenueHoursOfOperationData"
+          },
+          "description": "Hours of venue"
+        },
+        "holidays": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VenueCreateVenueHolidayRequest"
+          },
+          "description": "Holidays at venue"
+        },
+        "images": {
+          "$ref": "#/definitions/VenueCreateImageData",
+          "description": "Images for venue"
+        }
+      },
+      "description": "Create venue request body",
+      "title": "CreateVenueRequest"
+    },
+    "VenueEditAmenitiesData": {
+      "type": "object",
+      "properties": {
+        "amenityId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      }
+    },
+    "VenueEditImageData": {
+      "type": "object",
+      "properties": {
+        "headerImg": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VenueEditImgData"
+          }
+        },
+        "thumbnailImg": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VenueEditImgData"
+          }
+        },
+        "galleryImg": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VenueEditImgData"
+          }
+        }
+      }
+    },
+    "VenueEditImgData": {
+      "type": "object",
+      "properties": {
+        "imgUrl": {
+          "type": "string"
+        },
+        "status": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      }
+    },
+    "VenueEditVenueHolidayRequest": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "status": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      }
+    },
+    "VenueEditVenueRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of venue"
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of venue"
+        },
+        "address": {
+          "type": "string",
+          "description": "Address of venue"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Phone of venue"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email of venue"
+        },
+        "latitude": {
+          "type": "number",
+          "format": "float",
+          "description": "Latitude of venue"
+        },
+        "longitude": {
+          "type": "number",
+          "format": "float",
+          "description": "Longitude of venue"
+        },
+        "amenities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VenueEditAmenitiesData"
+          },
+          "description": "Amenities of venue"
+        },
+        "venueId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of venue"
+        },
+        "hoursOfOperation": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VenueHoursOfOperationDataUpdated"
+          },
+          "description": "Hours of venue"
+        },
+        "holidays": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VenueEditVenueHolidayRequest"
+          },
+          "description": "Holidays at venue"
+        },
+        "images": {
+          "$ref": "#/definitions/VenueEditImageData",
+          "description": "Images for venue"
+        }
+      },
+      "description": "Event venue request body",
+      "title": "EditVenueRequest"
+    },
+    "VenueGetAllAmenitiesRes": {
+      "type": "object",
+      "properties": {
+        "amenityData": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VenueAmenityData"
+          }
+        }
+      }
+    },
+    "VenueGetListOfVenueByMerchantIDRes": {
+      "type": "object",
+      "properties": {
+        "venueData": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VenuevenueList"
+          }
+        }
+      }
+    },
+    "VenueGetVenueByIDRes": {
+      "type": "object",
+      "properties": {
+        "venueId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "latitude": {
+          "type": "number",
+          "format": "float"
+        },
+        "longitude": {
+          "type": "number",
+          "format": "float"
+        },
+        "amenities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VenueAmenityData"
+          }
+        },
+        "holidays": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VenueHolidaysData"
+          }
+        },
+        "hoursOfOperation": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VenueHoursOfOperationData"
+          }
+        },
+        "images": {
+          "$ref": "#/definitions/VenueCreateImageData"
+        }
+      }
+    },
+    "VenueHolidaysData": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        }
+      }
+    },
+    "VenueHoursOfOperationData": {
+      "type": "object",
+      "properties": {
+        "day": {
+          "type": "string"
+        },
+        "timing": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VenueTiming"
+          }
+        }
+      }
+    },
+    "VenueHoursOfOperationDataUpdated": {
+      "type": "object",
+      "properties": {
+        "day": {
+          "type": "string"
+        },
+        "timing": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/VenueUpdatedTiming"
+          }
+        }
+      }
+    },
+    "VenueTiming": {
+      "type": "object",
+      "properties": {
+        "openingTime": {
+          "type": "string"
+        },
+        "closingTime": {
+          "type": "string"
+        }
+      }
+    },
+    "VenueUpdatedTiming": {
+      "type": "object",
+      "properties": {
+        "openingTime": {
+          "type": "string"
+        },
+        "closingTime": {
+          "type": "string"
+        },
+        "status": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      }
+    },
+    "VenuevenueList": {
+      "type": "object",
+      "properties": {
+        "venueId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "venueName": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "ApiKeyAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}

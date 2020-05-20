@@ -1,0 +1,374 @@
+syntax = "proto3";
+
+package Facility;
+
+import "google/api/annotations.proto";
+import "protoc-gen-swagger/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
+	security_definitions: {
+		security: {
+			key: "ApiKeyAuth";
+			value: {
+				type: TYPE_API_KEY;
+				in: IN_HEADER;
+				name: "Authorization";
+			}
+		}
+	}
+};
+
+
+//The Facility service definition.
+service Facility {
+
+    rpc CreateFacility (CreateFacilityRequest) returns (FacilityData) {
+        option (google.api.http) = {
+            post: "/v1/facilities"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+            security: {
+                security_requirement: {
+                    key: "ApiKeyAuth";
+                    value: {}
+                }
+            }
+        };
+    }
+
+    rpc EditFacility (EditFacilityRequest) returns (FacilityData) {
+        option (google.api.http) = {
+            put: "/v1/facilities"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+            security: {
+                security_requirement: {
+                    key: "ApiKeyAuth";
+                    value: {}
+                }
+            }
+        };
+    }
+
+    rpc GetAllSportCategories(GetAllSportCategoriesReq) returns (GetAllSportCategoriesRes) {
+        option (google.api.http) = {
+            get: "/v1/facilities/categories"
+        };
+        option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+            security: {
+                security_requirement: {
+                    key: "ApiKeyAuth";
+                    value: {}
+                }
+            }
+        };
+    }
+
+    rpc GetFacilityByID(GetFacilityByIDReq) returns (GetFacilityByIDRes) {
+        option (google.api.http) = {
+            get: "/v1/facilities/{facilityIds}"
+        };
+        option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+            security: {
+                security_requirement: {
+                    key: "ApiKeyAuth";
+                    value: {}
+                }
+            }
+        };
+    }
+
+    rpc GetFacilityForVenueID(GetFacilityForVenueIDReq) returns (GetFacilityForVenueIDRes) {
+        option (google.api.http) = {
+            get: "/v1/facilities/venue/{venueId}"
+        };
+        option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+            security: {
+                security_requirement: {
+                    key: "ApiKeyAuth";
+                    value: {}
+                }
+            }
+        };
+    }
+    /*
+    rpc GetFacilityStats(GetFacilityStatsReq) returns (GetFacilityStatsRes) {
+        option (google.api.http) = {
+            get: "/v1/facilities/stats/{facilityIds}"
+        };
+        option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+            security: {
+                security_requirement: {
+                    key: "ApiKeyAuth";
+                    value: {}
+                }
+            }
+        };
+    }
+    */
+
+
+    rpc DeleteFacilityByID(DeleteFacilityByIDReq) returns (GenericReply) {
+        option (google.api.http) = {
+            delete: "/v1/facilities/{facilityId}"
+        };
+        option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+            security: {
+                security_requirement: {
+                    key: "ApiKeyAuth";
+                    value: {}
+                }
+            }
+        };
+    }  
+}
+
+message GetFacilityCustomRatesByIDRes {
+    repeated CustomRates data = 1;
+}
+
+message GetFacilityCustomRatesByIDReq {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "GetFacilityCustomRatesByIDReq"
+			description: "Get stats of facility request body"
+			required: ["facilityId"]
+		}
+	};
+    int32 facilityId = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Facility ID for which stats to be fetched"}];
+    string startDate = 2 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Pass start date from which stats to be displayed"}];
+    string endDate = 3 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Pass end date till which stats to be displayed"}];
+}
+
+message UnavailableFacilityByIDReq {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "UnavailableFacilityByIDReq"
+			description: "Get unavailable facility by ID request body"
+			required: ["facilityId"]
+		}
+	};
+    int32 facilityId = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Facility ID which is to be unavailable"}];
+}
+
+message DeleteFacilityByIDReq {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "DeleteFacilityByIDReq"
+			description: "Delete facility by ID request body"
+			required: ["facilityId"]
+		}
+	};
+    int32 facilityId = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Facility ID which is to be deleted/make unavailable"}];
+    string type = 2 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Type is delete/unavailable"}];
+}
+
+message GenericReply {
+    bool status = 1;
+}
+
+message FacilityStats {
+    float totalEarnings = 1;
+    int32 noOfBookings = 2;
+    int32 noOfBookingsToday = 3;
+    string lastBookingDate = 4;
+    float totalEarningsToday = 5;
+}
+
+message FinalStats {
+    int32 facilityId = 1;
+    string facilityName = 2;
+    repeated SportCategoryData categoryData = 3;
+    FacilityStats stats = 4;
+}
+
+message GetFacilityStatsRes {
+    repeated FinalStats data = 1;
+}
+
+message GetFacilityStatsReq {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "GetFacilityStatsReq"
+			description: "Get stats of facility request body"
+			required: ["facilityIds"]
+		}
+	};
+    string facilityIds = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Facility IDs for which stats to be fetched"}];
+    string startDate = 2 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Pass start date from which stats to be displayed"}];
+    string endDate = 3 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Pass end date till which stats to be displayed"}];
+    string limit = 4 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Pass limit for the pagination of results"}];
+    string offset = 5 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Pass offset for the pagination of results"}];
+    string sort = 6 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Pass sorting option like sort by earnings or sort by bookings"}];
+}
+
+message FacilityIDData {
+    int32 facilityId = 1;
+    string facilityName = 2;
+}
+
+message GetFacilityForVenueIDRes {
+    repeated FacilityIDData data = 1;
+}
+
+message GetFacilityForVenueIDReq {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "GetFacilityForVenueIDReq"
+			description: "Get facility for venue request body"
+			required: ["venueId"]
+		}
+	};
+    int32 venueId = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "VenueID for which facility is to be fetched"}];
+}
+
+message  GetFacilitySlotsByIDReq {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "GetFacilitySlotsByIDReq"
+			description: "Get facility slots by ID request body"
+			required: ["facilityId"]
+		}
+	};
+    int32 facilityId = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Facility ID for which slots are requested"}];
+}
+
+message FacilitySlotData {
+    string slotDays = 1;
+    string slotType = 2;
+    string slotStartTime = 3;
+    string slotEndTime = 4;
+    float slotPrice = 5;
+}
+
+message FacilityUpdateSlotData {
+    string slotDays = 1;
+    string slotType = 2;
+    string slotStartTime = 3;
+    string slotEndTime = 4;
+    float slotPrice = 5;
+    bool status = 6;
+}
+
+message GetFacilitySlotsByIDRes {
+    repeated FacilitySlotData data = 1;
+}
+
+message GetFacilityByIDReq {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "GetFacilityByIDReq"
+			description: "Get facility by ID request body"
+			required: ["facilityIds"]
+		}
+	};
+    string facilityIds = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Facility IDs to be fetched"}];
+}
+
+message GetSportCategoryByIDReq {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "GetSportCategoryByIDReq"
+			description: "Get sport category by ID request body"
+			required: ["categoryId"]
+		}
+	};
+    int32 categoryId = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Category ID of sport requested"}];
+}
+
+message FacilityData {
+    int32 facilityId = 1;
+    string facilityName = 2;
+    int32 venueId = 3;
+    float defaultRate = 4;
+    int32 timeSlot = 5;
+    repeated SportCategoryData categoryData = 6;
+    repeated CustomRates customRates = 7;
+    repeated FacilitySlotData weekSlots = 8;
+    bool available = 9;
+}
+
+message GetFacilityByIDRes {
+    repeated FacilityData data = 1;
+}
+
+message SportCategoryData {
+    int32 categoryId = 1;
+    string categoryName = 2;
+}
+
+message GetAllSportCategoriesReq {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "GetAllSportCategoriesReq"
+			description: "Get sport categories request body"
+		}
+	};
+}
+
+message GetAllSportCategoriesRes {
+    repeated SportCategoryData data = 1;
+}
+
+message CreateFacilityRequest {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "CreateFacilityRequest"
+			description: "Create facility request body"
+			required: ["facilityName", "venueId", "defaultRate", "timeSlot", "categoryData", "weekSlots","customRates"]
+		}
+	};
+    string facilityName = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Name of facility"}];
+    int32 venueId = 2 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "VenueID of facility"}];
+    float defaultRate = 3 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Config of facility"}];
+    int32 timeSlot = 4 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Time slot of facility"}];
+    repeated SportCategories categoryData = 5 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Sport categories of facility"}];
+    repeated FacilitySlotData weekSlots = 6 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "WeekData of facility"}];
+    repeated CustomRates customRates = 7 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Custom rates of facility"}];
+}
+
+message SportCategories {
+    int32 categoryId = 1;
+}
+
+message UpdateSportCategories {
+    int32 categoryId = 1;
+    bool status = 2;
+}
+
+message EditFacilityRequest {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "EditFacilityRequest"
+			description: "Edit facility request body"
+			required: ["name", "defaultRate", "categoryData", "weekSlots", "facilityId", "customRates"]
+		}
+	};
+    string facilityName = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Name of facility"}];
+    float defaultRate  = 2 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Config of facility"}];
+    repeated UpdateSportCategories categoryData = 3 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Sport categories of facility"}];
+    repeated FacilityUpdateSlotData weekSlots = 4 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Week data of facility"}];
+    int32 facilityId = 5 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "ID of facility"}];
+    repeated UpdateCustomRates customRates = 6 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Custom rates of facility"}];
+}
+
+message CustomRates {
+    string startDate = 1;
+    string endDate = 2;
+    float price = 3;
+    bool available = 4;
+}
+
+message UpdateCustomRates {
+    string startDate = 1;
+    string endDate = 2;
+    float price = 3;
+    bool available = 4;
+    bool status = 5;
+}
+
+message CreateFacilityReply {
+    FacilityData data = 1;
+}

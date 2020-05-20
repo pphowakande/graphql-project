@@ -1,0 +1,18 @@
+{
+  "grpcurl": "0.0.0.0:50051",
+  "bkmEndpoint": "http://in-cs-app.sit.n3b.bookmyshow.org/",
+  "dbConnections": {
+    "master": {
+      "dbUser": "poonam",
+      "dbPassword": "poonam",
+      "dbHost": "127.0.0.1",
+      "dbName": "turfdb_masters"
+    },
+    "transactional": {
+      "dbUser": "poonam",
+      "dbPassword": "poonam",
+      "dbHost": "127.0.0.1",
+      "dbName": "turfdb_transactional"
+    }
+  }
+}

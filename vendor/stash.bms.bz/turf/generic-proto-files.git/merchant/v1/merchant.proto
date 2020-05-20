@@ -1,0 +1,453 @@
+syntax = "proto3";
+
+package Merchant;
+
+import "google/api/annotations.proto";
+import "protoc-gen-swagger/options/annotations.proto";
+
+
+option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
+	security_definitions: {
+		security: {
+			key: "ApiKeyAuth";
+			value: {
+				type: TYPE_API_KEY;
+				in: IN_HEADER;
+				name: "Authorization";
+			}
+		}
+	}
+};
+
+//The Merchant service definition.
+service Merchant {
+    rpc SignupMerchant (SignupRequest) returns (SignupReply)  {
+        option (google.api.http) = {
+            post: "/v1/merchants/signup"
+            body: "*"
+        };
+    }
+
+    rpc PhoneVerifyMerchant (PhoneVerifyRequest) returns (GenericReply) {
+        option (google.api.http) = {
+           post: "/v1/merchants/verify/phone"
+           body: "*"
+        };
+    }
+
+    rpc PhoneVerifyTeam (PhoneVerifyTeamRequest) returns (PhoneVerifyTeamReply) {
+        option (google.api.http) = {
+           post: "/v1/merchants/verify/phone/team"
+           body: "*"
+        };
+    }
+
+    rpc EmailVerifyMerchant (EmailVerifyRequest) returns (GenericReply) {
+        option (google.api.http) = {
+           post: "/v1/merchants/verify/email"
+           body: "*"
+        };
+    }
+
+    rpc ResendCode (ResendCodeRequest) returns (GenericReply) {
+        option (google.api.http) = {
+           post: "/v1/merchants/resend-code"
+           body: "*"
+        };
+    }
+
+    rpc UploadDoc (UploadDocRequest) returns (GenericReply) {
+        option (google.api.http) = {
+           post: "/v1/merchants/upload"
+           body: "*"
+        };
+    }
+
+    rpc LoginMerchant (LoginRequest) returns (LoginReply){
+        option (google.api.http) = {
+            post: "/v1/merchants/login"
+            body: "*"
+        };
+    }
+
+    rpc EditMerchant (EditMerchantRequest) returns (GetMerchantByIDRes){
+        option (google.api.http) = {
+            put: "/v1/merchants"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+            security: {
+                security_requirement: {
+                    key: "ApiKeyAuth";
+                    value: {}
+                }
+            }
+        };
+    }
+
+    rpc ForgotPasswordMerchant (ForgotPasswordRequest) returns (GenericReply) {
+        option (google.api.http) = {
+            post: "/v1/merchants/forgot-password"
+            body: "*"
+        };
+    }
+
+    rpc ResetPasswordMerchant (ResetPasswordRequest) returns (GenericReply) {
+        option (google.api.http) = {
+            post: "/v1/merchants/reset-password"
+            body: "*"
+        };
+    }
+
+    rpc GetMerchantByID(GenericRequest) returns (GetMerchantByIDRes) {
+        option (google.api.http) = {
+            get: "/v1/merchants"
+        };
+        option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+            security: {
+                security_requirement: {
+                    key: "ApiKeyAuth";
+                    value: {}
+                }
+            }
+        };
+    }
+
+    rpc AddTeamMember(AddTeamMemberRequest) returns (AddTeamMemberReply) {
+        option (google.api.http) = {
+            post: "/v1/merchants/team"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+            security: {
+                security_requirement: {
+                    key: "ApiKeyAuth";
+                    value: {}
+                }
+            }
+        };
+    }
+
+    rpc EditTeamMember(EditTeamMemberRequest) returns (EditTeamMemberReply) {
+        option (google.api.http) = {
+            put: "/v1/merchants/team/{accountId}"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+            security: {
+                security_requirement: {
+                    key: "ApiKeyAuth";
+                    value: {}
+                }
+            }
+        };
+    }
+
+    rpc DeleteTeamMember(DeleteTeamMemberRequest) returns (GenericReply) {
+        // {accountId} is mapped into the DeleteTeamMemberRequest.accountId field!
+        option (google.api.http) = {
+            delete: "/v1/merchants/team/{accountId}"
+        };
+        option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+            security: {
+                security_requirement: {
+                    key: "ApiKeyAuth";
+                    value: {}
+                }
+            }
+        };
+    }
+
+    rpc GetMerchantTeam(GetMerchantTeamRequest) returns (GetMerchantTeamRes) {
+        option (google.api.http) = {
+            get: "/v1/merchants/team"
+        };
+        option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+            security: {
+                security_requirement: {
+                    key: "ApiKeyAuth";
+                    value: {}
+                }
+            }
+        };
+    } 
+}
+
+message GetMerchantTeamRequest {
+    string orderBy = 1;  // Mapped to URL query parameter `orderBy`.
+}
+
+message TeamMemberData {
+    int32 accountId = 1;
+    string fullName = 2;
+    string accountType = 3;
+    string email = 4;
+    string phone = 5;
+    int32 createdAt = 6;
+    string createdBy = 7;
+}
+
+message GetMerchantTeamRes {
+    repeated TeamMemberData teamData = 1;
+}
+
+message DeleteTeamMemberRequest {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+        json_schema: {
+            title: "DeleteTeamMemberRequest"
+            description: "Delete Team Member request body"
+            required: ["accountId"]
+        }
+    };
+    int32 accountId = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Team member account Id which is to be deleted"}];
+}
+
+message UploadDocRequest {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+        json_schema: {
+            title: "UploadDocRequest"
+            description: "Upload Merchant document request body"
+            required: ["accountId","kycData"]
+        }
+    };
+
+    int32 accountId = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "uniqueID of the merchant"}];
+    KycDataEdit kycData = 2;
+}
+
+message AddTeamMemberReply {
+    int32 accountId = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "AccountId of the team member"}];
+    string firstName = 2 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "FirstName of the merchant"}];
+    string lastName = 3 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "LastName of the merchant"}];
+    string email = 4 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Email of the merchant"}];
+    string phone = 5 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "phone of the merchant"}];
+    string accountType = 6 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Account type of the merchant"}];
+    AccessData privileges = 7 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Privileges data of the merchant"}];
+}
+
+message EditTeamMemberReply {
+    string firstName = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "FirstName of the merchant"}];
+    string lastName = 2 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "LastName of the merchant"}];
+    string email = 3 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Email of the merchant"}];
+    string phone = 4 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "phone of the merchant"}];
+    string accountType = 5 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Account type of the merchant"}];
+    AccessData privileges = 6 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Privileges data of the merchant"}];
+    int32 accountId = 7 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Account Id of the team member"}];
+}
+
+message AddTeamMemberRequest {
+
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+        json_schema: {
+            title: "AddTeamMemberRequest"
+            description: "Add Team Member request body"
+            required: []
+        }
+    };
+
+    string firstName = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "FirstName of the merchant"}];
+    string lastName = 2 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "LastName of the merchant"}];
+    string email = 3 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Email of the merchant"}];
+    string phone = 4 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "phone of the merchant"}];
+    string accountType = 5 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Account type of the merchant"}];
+    AccessData privileges = 6 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Privileges data of the merchant"}];
+}
+
+message EditTeamMemberRequest {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+        json_schema: {
+            title: "EditTeamMemberRequest"
+            description: "Edit Team Member request body"
+            required: ["firstName","lastName","email","phone","privileges"]
+        }
+    };
+
+    string firstName = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "FirstName of the merchant"}];
+    string lastName = 2 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "LastName of the merchant"}];
+    string email = 3 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Email of the merchant"}];
+    string phone = 4 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "phone of the merchant"}];
+    int32 accountId = 5; // Mapped to URL query parameter `accountId`.
+    repeated EditAccessData privileges = 6 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Privileges data of the merchant"}];
+}
+
+message EditAccessData {
+    int32 venueId = 1;
+    bool status = 2;
+}
+
+message AccessData {
+    repeated int32 venueIds = 1;
+}
+
+message GenericRequest {
+}
+
+message KycData {
+    string gstNoFile = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "GST Document of the merchant"}];
+    string panNoFile = 2 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Pan Document of the merchant"}];
+    string bankAccFile = 3 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Bank Account document of the merchant"}];
+    string addressFile = 4 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Address document of the merchant"}];
+}
+
+message KycDataEdit {
+    string gstNoFile = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Base 64 format of GST certificate"}];
+    string panNoFile = 2 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Base 64 format of PAN document"}];
+    string bankAccFile = 3 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Base 64 format of Bank Account statement"}];
+    string addressFile = 4 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Base 64 format of Address document"}];
+    bool doLater = 5 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "doLater flag describes if merchant has accepted to upload documents later"}];
+}
+
+message GetMerchantByIDRes {
+    int32 accountId = 1;
+    string businessName = 2;
+    string merchantFullName = 3;
+    string address = 4;
+    string phone = 5;
+    string email = 6;
+    KycData kycData = 7;
+    string password = 8;
+}
+
+message EditMerchantRequest {
+
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "EditMerchantRequest"
+			description: "Edit Merchant request body"
+			required: []
+		}
+	};
+    string email = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "email of the merchant"}];
+    string businessName = 2 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "merchant name of the merchant"}];
+    string merchantFullName = 3 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "full name of the merchant"}];
+    string phone = 4 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "phone no of the merchant"}];
+    KycDataEdit kycData = 5;
+}
+
+message GenericReply {
+    bool status = 1;
+}
+
+message ResendCodeRequest {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "ResendCodeRequest"
+			description: "Resend OTP request body"
+			required: ["accountId"]
+		}
+	};
+    int32 accountId = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "uniqueID of the merchant"}];
+}
+
+message EmailVerifyRequest {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+        json_schema: {
+            title: "EmailVerifyRequest"
+            description: "Merchant email verify request body"
+            required: ["verificationCode", "verificationType","email"]
+        }
+    };
+    string verificationCode = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Verification Code present in email link"}];
+    string verificationType = 2 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Type of Verification"}];
+    string email = 3 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "email address"}];
+}
+
+message ResetPasswordRequest {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "ResetPasswordRequest"
+			description: "ResetPasswordRequest request body"
+			required: ["email", "newPassword", "resetPasswordToken"]
+		}
+	};
+    string email =  1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Email  of merchant"}];
+    string newPassword = 2 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "New password"}];
+    string resetPasswordToken = 3 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Reset Password Token for auth"}];
+}
+
+message SignupRequest {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "SignupRequest"
+			description: "Merchant signup request body"
+			required: ["email", "password", "businessName", "merchantFullName", "phone", "userSource"]
+		}
+	};
+    string email = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "email of the merchant"}];
+    string password = 2 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "password for login"}];
+    string businessName = 3 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "merchant of the merchant"}];
+    string merchantFullName = 4 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "full name of the merchant"}];
+    string phone = 5 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "phone number of the merchant"}];
+    string userSource = 6 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "source of merchant signing up"}];
+}
+
+message SignupReply {
+    int32 accountId = 1;
+}
+
+message PhoneVerifyTeamReply {
+    string resetPasswordCode = 1;
+}
+
+message PhoneVerifyRequest {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "PhoneVerifyRequest"
+			description: "Merchant phone verify request body"
+			required: ["verificationCode", "verificationType","accountId"]
+		}
+	};
+    string verificationCode = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "OTP sent to the merchant"}];
+    string verificationType = 2 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Type of OTP"}];
+    int32 accountId = 3 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Account ID of the user"}];
+}
+
+message PhoneVerifyTeamRequest {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+        json_schema: {
+            title: "PhoneVerifyTeamRequest"
+            description: "Team member phone verify request body"
+            required: ["verificationCode", "verificationType","email"]
+        }
+    };
+    string verificationCode = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "OTP sent to the merchant"}];
+    string verificationType = 2 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Type of OTP"}];
+    string email = 3 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Email address of the user"}];
+}
+
+message LoginRequest {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "LoginRequest"
+			description: "Login request body"
+			required: ["login", "password"]
+		}
+	};
+    string login = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Email/Phone of the merchant"}];
+    string password = 2 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Login password"}];
+}
+
+message LoginReply {
+    int32 accountId = 1;
+    string merchantFullName = 2;
+    string token = 3;
+    string accountType = 4;
+    bool emailVerify = 5;
+    AccessData privileges = 6;
+    int32 lastLoginAt = 7;
+    bool kycPending = 8;
+    bool phoneVerify = 9;
+    bool bmsVerify = 10;
+    string businessName = 11;
+}
+
+message ForgotPasswordRequest {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "ForgotPasswordRequest"
+			description: "Forgot password request body"
+			required: ["email"]
+		}
+	};
+    string email = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Email of the merchant"}];
+}

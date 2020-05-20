@@ -1,0 +1,536 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "facility/v1/facility.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/facilities": {
+      "post": {
+        "operationId": "CreateFacility",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/FacilityFacilityData"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FacilityCreateFacilityRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Facility"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "EditFacility",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/FacilityFacilityData"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/FacilityEditFacilityRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Facility"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/facilities/categories": {
+      "get": {
+        "operationId": "GetAllSportCategories",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/FacilityGetAllSportCategoriesRes"
+            }
+          }
+        },
+        "tags": [
+          "Facility"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/facilities/venue/{venueId}": {
+      "get": {
+        "operationId": "GetFacilityForVenueID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/FacilityGetFacilityForVenueIDRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "venueId",
+            "description": "VenueID for which facility is to be fetched",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Facility"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/facilities/{facilityIds}": {
+      "get": {
+        "operationId": "GetFacilityByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/FacilityGetFacilityByIDRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "facilityIds",
+            "description": "Facility IDs to be fetched",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Facility"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/facilities/{facilityId}": {
+      "delete": {
+        "operationId": "DeleteFacilityByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/FacilityGenericReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "facilityId",
+            "description": "Facility ID which is to be deleted/make unavailable",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "type",
+            "description": "Type is delete/unavailable",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Facility"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "FacilityCreateFacilityRequest": {
+      "type": "object",
+      "properties": {
+        "facilityName": {
+          "type": "string",
+          "description": "Name of facility"
+        },
+        "venueId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "VenueID of facility"
+        },
+        "defaultRate": {
+          "type": "number",
+          "format": "float",
+          "description": "Config of facility"
+        },
+        "timeSlot": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Time slot of facility"
+        },
+        "categoryData": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FacilitySportCategories"
+          },
+          "description": "Sport categories of facility"
+        },
+        "weekSlots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FacilityFacilitySlotData"
+          },
+          "description": "WeekData of facility"
+        },
+        "customRates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FacilityCustomRates"
+          },
+          "description": "Custom rates of facility"
+        }
+      },
+      "description": "Create facility request body",
+      "title": "CreateFacilityRequest",
+      "required": [
+        "facilityName",
+        "venueId",
+        "defaultRate",
+        "timeSlot",
+        "categoryData",
+        "weekSlots",
+        "customRates"
+      ]
+    },
+    "FacilityCustomRates": {
+      "type": "object",
+      "properties": {
+        "startDate": {
+          "type": "string"
+        },
+        "endDate": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "float"
+        },
+        "available": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      }
+    },
+    "FacilityEditFacilityRequest": {
+      "type": "object",
+      "properties": {
+        "facilityName": {
+          "type": "string",
+          "description": "Name of facility"
+        },
+        "defaultRate": {
+          "type": "number",
+          "format": "float",
+          "description": "Config of facility"
+        },
+        "categoryData": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FacilityUpdateSportCategories"
+          },
+          "description": "Sport categories of facility"
+        },
+        "weekSlots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FacilityFacilityUpdateSlotData"
+          },
+          "description": "Week data of facility"
+        },
+        "facilityId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "ID of facility"
+        },
+        "customRates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FacilityUpdateCustomRates"
+          },
+          "description": "Custom rates of facility"
+        }
+      },
+      "description": "Edit facility request body",
+      "title": "EditFacilityRequest",
+      "required": [
+        "name",
+        "defaultRate",
+        "categoryData",
+        "weekSlots",
+        "facilityId",
+        "customRates"
+      ]
+    },
+    "FacilityFacilityData": {
+      "type": "object",
+      "properties": {
+        "facilityId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "facilityName": {
+          "type": "string"
+        },
+        "venueId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "defaultRate": {
+          "type": "number",
+          "format": "float"
+        },
+        "timeSlot": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "categoryData": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FacilitySportCategoryData"
+          }
+        },
+        "customRates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FacilityCustomRates"
+          }
+        },
+        "weekSlots": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FacilityFacilitySlotData"
+          }
+        },
+        "available": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      }
+    },
+    "FacilityFacilityIDData": {
+      "type": "object",
+      "properties": {
+        "facilityId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "facilityName": {
+          "type": "string"
+        }
+      }
+    },
+    "FacilityFacilitySlotData": {
+      "type": "object",
+      "properties": {
+        "slotDays": {
+          "type": "string"
+        },
+        "slotType": {
+          "type": "string"
+        },
+        "slotStartTime": {
+          "type": "string"
+        },
+        "slotEndTime": {
+          "type": "string"
+        },
+        "slotPrice": {
+          "type": "number",
+          "format": "float"
+        }
+      }
+    },
+    "FacilityFacilityUpdateSlotData": {
+      "type": "object",
+      "properties": {
+        "slotDays": {
+          "type": "string"
+        },
+        "slotType": {
+          "type": "string"
+        },
+        "slotStartTime": {
+          "type": "string"
+        },
+        "slotEndTime": {
+          "type": "string"
+        },
+        "slotPrice": {
+          "type": "number",
+          "format": "float"
+        },
+        "status": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      }
+    },
+    "FacilityGenericReply": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      }
+    },
+    "FacilityGetAllSportCategoriesRes": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FacilitySportCategoryData"
+          }
+        }
+      }
+    },
+    "FacilityGetFacilityByIDRes": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FacilityFacilityData"
+          }
+        }
+      }
+    },
+    "FacilityGetFacilityForVenueIDRes": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/FacilityFacilityIDData"
+          }
+        }
+      }
+    },
+    "FacilitySportCategories": {
+      "type": "object",
+      "properties": {
+        "categoryId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "FacilitySportCategoryData": {
+      "type": "object",
+      "properties": {
+        "categoryId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "categoryName": {
+          "type": "string"
+        }
+      }
+    },
+    "FacilityUpdateCustomRates": {
+      "type": "object",
+      "properties": {
+        "startDate": {
+          "type": "string"
+        },
+        "endDate": {
+          "type": "string"
+        },
+        "price": {
+          "type": "number",
+          "format": "float"
+        },
+        "available": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "status": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      }
+    },
+    "FacilityUpdateSportCategories": {
+      "type": "object",
+      "properties": {
+        "categoryId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "ApiKeyAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}

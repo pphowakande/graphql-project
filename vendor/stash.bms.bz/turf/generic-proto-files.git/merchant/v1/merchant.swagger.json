@@ -1,0 +1,1017 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "merchant/v1/merchant.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/merchants": {
+      "get": {
+        "operationId": "GetMerchantByID",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/MerchantGetMerchantByIDRes"
+            }
+          }
+        },
+        "tags": [
+          "Merchant"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "EditMerchant",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/MerchantGetMerchantByIDRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MerchantEditMerchantRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Merchant"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/merchants/forgot-password": {
+      "post": {
+        "operationId": "ForgotPasswordMerchant",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/MerchantGenericReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MerchantForgotPasswordRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Merchant"
+        ]
+      }
+    },
+    "/v1/merchants/login": {
+      "post": {
+        "operationId": "LoginMerchant",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/MerchantLoginReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MerchantLoginRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Merchant"
+        ]
+      }
+    },
+    "/v1/merchants/resend-code": {
+      "post": {
+        "operationId": "ResendCode",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/MerchantGenericReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MerchantResendCodeRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Merchant"
+        ]
+      }
+    },
+    "/v1/merchants/reset-password": {
+      "post": {
+        "operationId": "ResetPasswordMerchant",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/MerchantGenericReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MerchantResetPasswordRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Merchant"
+        ]
+      }
+    },
+    "/v1/merchants/signup": {
+      "post": {
+        "operationId": "SignupMerchant",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/MerchantSignupReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MerchantSignupRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Merchant"
+        ]
+      }
+    },
+    "/v1/merchants/team": {
+      "get": {
+        "operationId": "GetMerchantTeam",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/MerchantGetMerchantTeamRes"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "orderBy",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Merchant"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "post": {
+        "operationId": "AddTeamMember",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/MerchantAddTeamMemberReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MerchantAddTeamMemberRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Merchant"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/merchants/team/{accountId}": {
+      "delete": {
+        "operationId": "DeleteTeamMember",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/MerchantGenericReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "description": "Team member account Id which is to be deleted",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Merchant"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "EditTeamMember",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/MerchantEditTeamMemberReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "accountId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MerchantEditTeamMemberRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Merchant"
+        ],
+        "security": [
+          {
+            "ApiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/v1/merchants/upload": {
+      "post": {
+        "operationId": "UploadDoc",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/MerchantGenericReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MerchantUploadDocRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Merchant"
+        ]
+      }
+    },
+    "/v1/merchants/verify/email": {
+      "post": {
+        "operationId": "EmailVerifyMerchant",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/MerchantGenericReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MerchantEmailVerifyRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Merchant"
+        ]
+      }
+    },
+    "/v1/merchants/verify/phone": {
+      "post": {
+        "operationId": "PhoneVerifyMerchant",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/MerchantGenericReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MerchantPhoneVerifyRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Merchant"
+        ]
+      }
+    },
+    "/v1/merchants/verify/phone/team": {
+      "post": {
+        "operationId": "PhoneVerifyTeam",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/MerchantPhoneVerifyTeamReply"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/MerchantPhoneVerifyTeamRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Merchant"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "MerchantAccessData": {
+      "type": "object",
+      "properties": {
+        "venueIds": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      }
+    },
+    "MerchantAddTeamMemberReply": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "AccountId of the team member"
+        },
+        "firstName": {
+          "type": "string",
+          "description": "FirstName of the merchant"
+        },
+        "lastName": {
+          "type": "string",
+          "description": "LastName of the merchant"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email of the merchant"
+        },
+        "phone": {
+          "type": "string",
+          "description": "phone of the merchant"
+        },
+        "accountType": {
+          "type": "string",
+          "description": "Account type of the merchant"
+        },
+        "privileges": {
+          "$ref": "#/definitions/MerchantAccessData",
+          "description": "Privileges data of the merchant"
+        }
+      }
+    },
+    "MerchantAddTeamMemberRequest": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "description": "FirstName of the merchant"
+        },
+        "lastName": {
+          "type": "string",
+          "description": "LastName of the merchant"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email of the merchant"
+        },
+        "phone": {
+          "type": "string",
+          "description": "phone of the merchant"
+        },
+        "accountType": {
+          "type": "string",
+          "description": "Account type of the merchant"
+        },
+        "privileges": {
+          "$ref": "#/definitions/MerchantAccessData",
+          "description": "Privileges data of the merchant"
+        }
+      },
+      "description": "Add Team Member request body",
+      "title": "AddTeamMemberRequest"
+    },
+    "MerchantEditAccessData": {
+      "type": "object",
+      "properties": {
+        "venueId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "status": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      }
+    },
+    "MerchantEditMerchantRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "email of the merchant"
+        },
+        "businessName": {
+          "type": "string",
+          "description": "merchant name of the merchant"
+        },
+        "merchantFullName": {
+          "type": "string",
+          "description": "full name of the merchant"
+        },
+        "phone": {
+          "type": "string",
+          "description": "phone no of the merchant"
+        },
+        "kycData": {
+          "$ref": "#/definitions/MerchantKycDataEdit"
+        }
+      },
+      "description": "Edit Merchant request body",
+      "title": "EditMerchantRequest"
+    },
+    "MerchantEditTeamMemberReply": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "description": "FirstName of the merchant"
+        },
+        "lastName": {
+          "type": "string",
+          "description": "LastName of the merchant"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email of the merchant"
+        },
+        "phone": {
+          "type": "string",
+          "description": "phone of the merchant"
+        },
+        "accountType": {
+          "type": "string",
+          "description": "Account type of the merchant"
+        },
+        "privileges": {
+          "$ref": "#/definitions/MerchantAccessData",
+          "description": "Privileges data of the merchant"
+        },
+        "accountId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Account Id of the team member"
+        }
+      }
+    },
+    "MerchantEditTeamMemberRequest": {
+      "type": "object",
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "description": "FirstName of the merchant"
+        },
+        "lastName": {
+          "type": "string",
+          "description": "LastName of the merchant"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email of the merchant"
+        },
+        "phone": {
+          "type": "string",
+          "description": "phone of the merchant"
+        },
+        "accountId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "privileges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MerchantEditAccessData"
+          },
+          "description": "Privileges data of the merchant"
+        }
+      },
+      "description": "Edit Team Member request body",
+      "title": "EditTeamMemberRequest",
+      "required": [
+        "firstName",
+        "lastName",
+        "email",
+        "phone",
+        "privileges"
+      ]
+    },
+    "MerchantEmailVerifyRequest": {
+      "type": "object",
+      "properties": {
+        "verificationCode": {
+          "type": "string",
+          "description": "Verification Code present in email link"
+        },
+        "verificationType": {
+          "type": "string",
+          "description": "Type of Verification"
+        },
+        "email": {
+          "type": "string",
+          "description": "email address"
+        }
+      },
+      "description": "Merchant email verify request body",
+      "title": "EmailVerifyRequest",
+      "required": [
+        "verificationCode",
+        "verificationType",
+        "email"
+      ]
+    },
+    "MerchantForgotPasswordRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Email of the merchant"
+        }
+      },
+      "description": "Forgot password request body",
+      "title": "ForgotPasswordRequest",
+      "required": [
+        "email"
+      ]
+    },
+    "MerchantGenericReply": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      }
+    },
+    "MerchantGetMerchantByIDRes": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "businessName": {
+          "type": "string"
+        },
+        "merchantFullName": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "kycData": {
+          "$ref": "#/definitions/MerchantKycData"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "MerchantGetMerchantTeamRes": {
+      "type": "object",
+      "properties": {
+        "teamData": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MerchantTeamMemberData"
+          }
+        }
+      }
+    },
+    "MerchantKycData": {
+      "type": "object",
+      "properties": {
+        "gstNoFile": {
+          "type": "string",
+          "description": "GST Document of the merchant"
+        },
+        "panNoFile": {
+          "type": "string",
+          "description": "Pan Document of the merchant"
+        },
+        "bankAccFile": {
+          "type": "string",
+          "description": "Bank Account document of the merchant"
+        },
+        "addressFile": {
+          "type": "string",
+          "description": "Address document of the merchant"
+        }
+      }
+    },
+    "MerchantKycDataEdit": {
+      "type": "object",
+      "properties": {
+        "gstNoFile": {
+          "type": "string",
+          "description": "Base 64 format of GST certificate"
+        },
+        "panNoFile": {
+          "type": "string",
+          "description": "Base 64 format of PAN document"
+        },
+        "bankAccFile": {
+          "type": "string",
+          "description": "Base 64 format of Bank Account statement"
+        },
+        "addressFile": {
+          "type": "string",
+          "description": "Base 64 format of Address document"
+        },
+        "doLater": {
+          "type": "boolean",
+          "format": "boolean",
+          "description": "doLater flag describes if merchant has accepted to upload documents later"
+        }
+      }
+    },
+    "MerchantLoginReply": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "merchantFullName": {
+          "type": "string"
+        },
+        "token": {
+          "type": "string"
+        },
+        "accountType": {
+          "type": "string"
+        },
+        "emailVerify": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "privileges": {
+          "$ref": "#/definitions/MerchantAccessData"
+        },
+        "lastLoginAt": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "kycPending": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "phoneVerify": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "bmsVerify": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "businessName": {
+          "type": "string"
+        }
+      }
+    },
+    "MerchantLoginRequest": {
+      "type": "object",
+      "properties": {
+        "login": {
+          "type": "string",
+          "description": "Email/Phone of the merchant"
+        },
+        "password": {
+          "type": "string",
+          "description": "Login password"
+        }
+      },
+      "description": "Login request body",
+      "title": "LoginRequest",
+      "required": [
+        "login",
+        "password"
+      ]
+    },
+    "MerchantPhoneVerifyRequest": {
+      "type": "object",
+      "properties": {
+        "verificationCode": {
+          "type": "string",
+          "description": "OTP sent to the merchant"
+        },
+        "verificationType": {
+          "type": "string",
+          "description": "Type of OTP"
+        },
+        "accountId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "Account ID of the user"
+        }
+      },
+      "description": "Merchant phone verify request body",
+      "title": "PhoneVerifyRequest",
+      "required": [
+        "verificationCode",
+        "verificationType",
+        "accountId"
+      ]
+    },
+    "MerchantPhoneVerifyTeamReply": {
+      "type": "object",
+      "properties": {
+        "resetPasswordCode": {
+          "type": "string"
+        }
+      }
+    },
+    "MerchantPhoneVerifyTeamRequest": {
+      "type": "object",
+      "properties": {
+        "verificationCode": {
+          "type": "string",
+          "description": "OTP sent to the merchant"
+        },
+        "verificationType": {
+          "type": "string",
+          "description": "Type of OTP"
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the user"
+        }
+      },
+      "description": "Team member phone verify request body",
+      "title": "PhoneVerifyTeamRequest",
+      "required": [
+        "verificationCode",
+        "verificationType",
+        "email"
+      ]
+    },
+    "MerchantResendCodeRequest": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "uniqueID of the merchant"
+        }
+      },
+      "description": "Resend OTP request body",
+      "title": "ResendCodeRequest",
+      "required": [
+        "accountId"
+      ]
+    },
+    "MerchantResetPasswordRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "Email  of merchant"
+        },
+        "newPassword": {
+          "type": "string",
+          "description": "New password"
+        },
+        "resetPasswordToken": {
+          "type": "string",
+          "description": "Reset Password Token for auth"
+        }
+      },
+      "description": "ResetPasswordRequest request body",
+      "title": "ResetPasswordRequest",
+      "required": [
+        "email",
+        "newPassword",
+        "resetPasswordToken"
+      ]
+    },
+    "MerchantSignupReply": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "MerchantSignupRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "email of the merchant"
+        },
+        "password": {
+          "type": "string",
+          "description": "password for login"
+        },
+        "businessName": {
+          "type": "string",
+          "description": "merchant of the merchant"
+        },
+        "merchantFullName": {
+          "type": "string",
+          "description": "full name of the merchant"
+        },
+        "phone": {
+          "type": "string",
+          "description": "phone number of the merchant"
+        },
+        "userSource": {
+          "type": "string",
+          "description": "source of merchant signing up"
+        }
+      },
+      "description": "Merchant signup request body",
+      "title": "SignupRequest",
+      "required": [
+        "email",
+        "password",
+        "businessName",
+        "merchantFullName",
+        "phone",
+        "userSource"
+      ]
+    },
+    "MerchantTeamMemberData": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "fullName": {
+          "type": "string"
+        },
+        "accountType": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "createdBy": {
+          "type": "string"
+        }
+      }
+    },
+    "MerchantUploadDocRequest": {
+      "type": "object",
+      "properties": {
+        "accountId": {
+          "type": "integer",
+          "format": "int32",
+          "description": "uniqueID of the merchant"
+        },
+        "kycData": {
+          "$ref": "#/definitions/MerchantKycDataEdit"
+        }
+      },
+      "description": "Upload Merchant document request body",
+      "title": "UploadDocRequest",
+      "required": [
+        "accountId",
+        "kycData"
+      ]
+    }
+  },
+  "securityDefinitions": {
+    "ApiKeyAuth": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  }
+}

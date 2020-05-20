@@ -1,0 +1,18 @@
+{
+  "grpcurl": "0.0.0.0:50051",
+  "bkmEndpoint": "http://in-cs-app.sit.n3b.bookmyshow.org/",
+  "dbConnections": {
+    "master": {
+      "dbUser": "turfapi",
+      "dbPassword": "3dFE4Can",
+      "dbHost": "odp-turf-db-01.bigtree.org",
+      "dbName": "turfdb_masters"
+    },
+    "transactional": {
+      "dbUser": "turfapi",
+      "dbPassword": "3dFE4Can",
+      "dbHost": "odp-turf-db-01.bigtree.org",
+      "dbName": "turfdb_transactional"
+    }
+  }
+}

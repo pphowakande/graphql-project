@@ -1,0 +1,293 @@
+syntax = "proto3";
+
+package Venue;
+
+import "google/api/annotations.proto";
+//import "google/protobuf/empty.proto";
+import "protoc-gen-swagger/options/annotations.proto";
+
+option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
+	security_definitions: {
+		security: {
+			key: "ApiKeyAuth";
+			value: {
+				type: TYPE_API_KEY;
+				in: IN_HEADER;
+				name: "Authorization";
+			}
+		}
+	}
+};
+
+//The Venue service definition.
+service Venue {
+
+    rpc CreateVenue (CreateVenueRequest) returns (GetVenueByIDRes) {
+        option (google.api.http) = {
+            post: "/v1/venues"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+            security: {
+                security_requirement: {
+                    key: "ApiKeyAuth";
+                    value: {}
+                }
+            }
+        };
+    }
+
+    rpc EditVenue (EditVenueRequest) returns (GetVenueByIDRes) {
+        option (google.api.http) = {
+            put: "/v1/venues"
+            body: "*"
+        };
+        option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+            security: {
+                security_requirement: {
+                    key: "ApiKeyAuth";
+                    value: {}
+                }
+            }
+        };
+    }
+
+    rpc GetVenueByID(GetVenueByIDReq) returns (GetVenueByIDRes) {
+        option (google.api.http) = {
+            get: "/v1/venues/{venueId}"
+        };
+        option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+            security: {
+                security_requirement: {
+                    key: "ApiKeyAuth";
+                    value: {}
+                }
+            }
+        };
+    }
+
+    rpc GetListOfVenueByMerchantID(GetListOfVenueByMerchantIDReq) returns (GetListOfVenueByMerchantIDRes) {
+        option (google.api.http) = {
+            get: "/v1/venues/list/{accountId}"
+        };
+        option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+            security: {
+                security_requirement: {
+                    key: "ApiKeyAuth";
+                    value: {}
+                }
+            }
+        };
+    }
+
+    rpc GetAllAmenities(GetAllAmenitiesReq) returns (GetAllAmenitiesRes) {
+        option (google.api.http) = {
+            get: "/v1/venues/amenities/all"
+        };
+        option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+            security: {
+                security_requirement: {
+                    key: "ApiKeyAuth";
+                    value: {}
+                }
+            }
+        };
+    }
+}
+
+message GetListOfVenueByMerchantIDReq {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "GetListOfVenueByMerchantIDReq"
+			description: "Get list of venues filter by merchantID request body"
+			required: ["accountId"]
+		}
+	};
+    int32 accountId = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Filter by accountId"}];
+}
+
+message venueList {
+    int32 venueId = 1;
+    string venueName = 2;  
+}
+
+message GetListOfVenueByMerchantIDRes {
+    repeated venueList venueData = 1;
+}
+
+message GetAllAmenitiesReq {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "GetAllAmenitiesReq"
+			description: "Get all amenities request body"
+		}
+	};
+}
+
+message GetAllAmenitiesRes {
+    repeated AmenityData amenityData = 1;
+}
+
+message AmenityData {
+    int32 amenityId = 1;
+    string amenityName = 2;
+}
+
+message HolidaysData {
+    string title = 1;
+    string date = 2;
+}
+
+message GetAmenitiesByIDReq {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "GetAmenitiesByIDReq"
+			description: "Get amenities by IDs request body"
+			required: ["amenityIds"]
+		}
+	};
+    string amenityIds = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "IDs of amenities"}];
+}
+
+message GetAmenitiesByIDRes {
+    repeated AmenityData data = 1;
+}
+
+message Timing {
+    string openingTime = 1;
+    string closingTime = 2;
+}
+
+message UpdatedTiming {
+    string openingTime = 1;
+    string closingTime = 2;
+    bool status = 3;
+}
+
+message HoursOfOperationData {
+    string day = 1;
+    repeated Timing timing = 2;
+}
+
+message HoursOfOperationDataUpdated {
+    string day = 1;
+    repeated UpdatedTiming timing = 2;
+}
+
+message GetVenueByIDRes {
+    int32 venueId = 1;
+    string name = 2;
+    string description = 3;
+    string address = 4;
+    string phone = 5;
+    string email = 6;
+    float latitude = 7;
+    float longitude = 8;
+    repeated AmenityData amenities = 9;
+    repeated HolidaysData holidays = 10;
+    repeated HoursOfOperationData hoursOfOperation = 11;
+    CreateImageData images = 12;
+}
+
+message GetVenueByIDReq {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "GetVenueByIDReq"
+			description: "Get venue by venue ID request body"
+			required: ["venueId"]
+		}
+	};
+    int32 venueId = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Venue ID"}];
+};
+
+
+message CreateVenueHolidayRequest {
+    string title = 1;
+    string date = 2;
+}
+
+message EditVenueHolidayRequest {
+    string title = 1;
+    string date = 2;
+    bool status = 3;
+}
+
+message EditVenueRequest {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "EditVenueRequest"
+			description: "Event venue request body"
+			required: []
+		}
+	};
+    string name = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Name of venue"}];
+    string description = 2 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Description of venue"}];
+    string address = 3 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Address of venue"}];
+    string phone = 4 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Phone of venue"}];
+    string email = 5 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Email of venue"}];
+    float latitude = 6 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Latitude of venue"}];
+    float longitude = 7 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Longitude of venue"}];
+    repeated EditAmenitiesData amenities = 8 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Amenities of venue"}];
+    int32 venueId = 9 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "ID of venue"}];
+    repeated HoursOfOperationDataUpdated hoursOfOperation = 10 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Hours of venue"}];
+    repeated EditVenueHolidayRequest holidays = 11 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Holidays at venue"}];
+    EditImageData images = 12 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Images for venue"}];
+}
+
+message EditAmenitiesData {
+    int32 amenityId = 1;
+    bool status = 2;
+}
+
+message CreateAmenitiesData {
+    int32 amenityId = 1;
+}
+
+message CreateImgData {
+    string imgUrl = 1;
+}
+
+message EditImgData {
+    string imgUrl = 1;
+    bool status = 2;
+}
+
+message CreateImageData {
+    repeated CreateImgData headerImg = 1;
+    repeated CreateImgData thumbnailImg = 2;
+    repeated CreateImgData galleryImg = 3;
+}
+
+message EditImageData {
+    repeated EditImgData headerImg = 1;
+    repeated EditImgData thumbnailImg = 2;
+    repeated EditImgData galleryImg = 3;
+}
+
+message hoursData {
+    string day = 1;
+    string openingTime = 2;
+    string closingTime = 3;
+    bool status = 4;
+}
+
+message CreateVenueRequest {
+    option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		json_schema: {
+			title: "CreateVenueRequest"
+			description: "Create venue request body"
+			required: []
+		}
+	};
+    string name = 1 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Name of venue"}];
+    string description = 2 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Description of venue"}];
+    string address = 3 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Address of venue"}];
+    string phone = 4 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Phone number of venue"}];
+    string email = 5 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Email of venue"}];
+    float latitude = 6 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Latitude of venue"}];
+    float longitude = 7 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Longitude of venue"}];
+    repeated CreateAmenitiesData amenities = 8 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Amenities of venue"}];
+    repeated HoursOfOperationData hoursOfOperation = 9 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Hours of venue"}];
+    repeated CreateVenueHolidayRequest holidays = 10 [(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Holidays at venue"}];
+    CreateImageData images = 11[(grpc.gateway.protoc_gen_swagger.options.openapiv2_field) = {description: "Images for venue"}];
+}
